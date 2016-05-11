@@ -16,9 +16,24 @@ class Proxy
   def initialize(target_object)
     @object = target_object
     # ADD MORE CODE HERE
+    @messages=[]
   end
 
+  attr_reader :messages
+
   # WRITE CODE HERE
+  def method_missing(name, *args, &block)
+    @messages.push(name)
+    @object.send(name, *args, &block)
+  end
+
+  def called?(method_name)
+    @messages.include?(method_name) 
+  end
+
+  def number_of_times_called(method_name)
+    @messages.count{|x| x==method_name}
+  end
 end
 
 # The proxy object should pass the following Koan:
@@ -35,7 +50,6 @@ class AboutProxyObjectProject < Neo::Koan
 
   def test_tv_methods_still_perform_their_function
     tv = Proxy.new(Television.new)
-
     tv.channel = 10
     tv.power
 
@@ -48,7 +62,6 @@ class AboutProxyObjectProject < Neo::Koan
 
     tv.power
     tv.channel = 10
-
     assert_equal [:power, :channel=], tv.messages
   end
 

@@ -1,10 +1,24 @@
 require File.expand_path(File.dirname(__FILE__) + '/neo')
 
+require 'test/unit'
+require 'mocha/test_unit'
+#require "mocha/mini_test"
 # Implement a DiceSet Class here:
 #
-# class DiceSet
-#   code ...
-# end
+class DiceSet
+  attr_accessor :values
+  
+  def initialize
+    @values = []
+  end
+
+  def roll(roll_number)
+    @values=[]
+    roll_number.times { |i|
+      values<<1+Random.rand(6)
+    }
+  end 
+end
 
 class AboutDiceProject < Neo::Koan
   def test_can_create_a_dice_set
@@ -32,11 +46,12 @@ class AboutDiceProject < Neo::Koan
   end
 
   def test_dice_values_should_change_between_rolls
+    Random.expects(:rand).with(6).returns(1).at_least_once
     dice = DiceSet.new
 
     dice.roll(5)
     first_time = dice.values
-
+    Random.expects(:rand).with(6).returns(2).at_least_once
     dice.roll(5)
     second_time = dice.values
 

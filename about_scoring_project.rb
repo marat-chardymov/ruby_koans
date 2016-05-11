@@ -29,10 +29,6 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # Your goal is to write the score method.
 
-def gth
- puts "adsfasdfasdf"
-end
-
 def score(dice)
   score=0
   counter = Array.new(6,0) # init with 6 zeros
